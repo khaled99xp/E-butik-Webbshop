@@ -1,0 +1,129 @@
+//
+// API ENDPOINTS USER
+@hostname = localhost
+@port = 5001
+@host = {{hostname}}:{{port}}
+@token = 1234test1234
+//
+
+###
+
+// SKAPA USER
+POST http://{{host}}/register
+Content-Type: application/json
+
+{
+  "name": "Test Testsson",
+  "email": "test@mail.com",
+  "password": "test"
+}
+
+###
+
+// LOGGA IN USER
+POST http://{{host}}/login
+Content-Type: application/json
+
+{
+  "email": "// EN USER EMAIL",
+  "password": "// EN USER EMAIL"
+}
+
+###
+
+//
+// API ENDPOINTS PRODUCTS
+//
+
+// HÄMTA ALLA PRODUKTER
+// Används för att visa alla produkter i webbshopen
+# @name getProducts
+GET http://{{host}}/api/products
+
+###
+
+// HÄMTA SPECIFIK PRODUKT
+// Används för att visa en specifik produkt i webbshopen
+GET http://{{host}}/api/products/ // ID PÅ EN SPECIFIK PRODUKT
+
+###
+
+// SKAPA PRODUKT // UTAN TOKEN SÅ SKALL ANROPET MISSLYCKAS = 401
+POST http://{{host}}/api/products/
+Content-Type: application/json
+Authorization: @{{token}}
+
+{
+  "name": "Produkt 2",
+  "description": "Beskrivning av produkt 1",
+  "price": 100,
+  "stock": 10,
+  "category": "// ID PÅ EN SPECIFIK KATEGORI",
+  "token": "1234key1234"
+}
+
+###
+
+// HÄMTA ALLA PRODUKTER FÖR EN SPECIFIK KATEGORI
+// EXEMPEL /API/CATEGORY/5/PRODUCTS -> HÄMTAR ALLA PRODUKTER I KATEGORI 5
+GET http://{{host}}/api/category/ // en kategori id /products/
+###
+
+//
+// API ENDPOINTS KATEGORI
+// 
+
+// SKAPA KATEGORI, KEY MÅSTE ANGES // UTAN KEY SVARA 401
+# @name createCategory
+POST http://{{host}}/api/categories/
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Kategori 1",
+  "token": "1234key1234"
+}
+
+###
+
+// HÄMTA ALLA KATEGORIER, ANVÄNDS FÖR MENYN
+# @name getCategories
+GET http://{{host}}/api/categories
+
+###
+
+//
+// API ENDPOINTS ORDERS
+//
+
+// HÄMTA ALLA ORDERS, KEY MÅSTE ANGES FÖR ATT FÅ TILLGÅNG TILL ORDERS
+
+// SKAPA ORDER FÖR EN SPECIFIK USER
+POST http://{{host}}/api/orders/
+Content-Type: application/json
+
+{
+  "user": "// useremail",
+      "products": [
+    {
+      "id": "// ETT PRODUKT ID",
+      "quantity": 1
+    },
+    {
+      "id": "// ETT PRODUKT ID",
+      "quantity": 2
+    }
+  ]
+}
+
+###
+GET http://{{host}}/api/orders/
+Authorization: {{token}}
+
+###
+
+// HÄMTA ALLA ORDER, FEL KEY // SKALL MISSLYCKAS
+GET http://{{host}}/api/orders/
+Authorization: 43fel23
+
+###

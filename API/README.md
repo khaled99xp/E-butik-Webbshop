@@ -1,0 +1,1 @@
+I denna mapp skall ni skapa ett nytt .NET projekt som är ert REST API.

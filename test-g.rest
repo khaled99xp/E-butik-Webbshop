@@ -1,0 +1,96 @@
+//
+// API ENDPOINTS USER
+@hostname = localhost
+@port = 5001
+@host = {{hostname}}:{{port}}
+
+//
+
+
+###
+
+// SKAPA USER
+POST http://{{host}}/register
+Content-Type: application/json
+
+{
+  "name": "Test Testsson",
+  "email": "test@mail.com",
+  "password": "test"
+}
+
+###
+
+// LOGGA IN USER
+POST http://{{host}}/login
+Content-Type: application/json
+
+{
+  "email": "// EN USER EMAIL",
+  "password": "// EN USER EMAIL"
+}
+
+###
+
+//
+// API ENDPOINTS PRODUKTER
+//
+
+// HÄMTA ALLA PRODUKTER 
+// Används för att visa alla produkter i webbshopen
+
+# @name getProducts
+GET http://{{host}}/api/products
+
+###
+
+// HÄMTA SPECIFIK PRODUKT
+// Används för att visa en specifik produkt i webbshopen
+
+GET http://{{host}}/api/products/ // ID PÅ PRODUKT
+
+###
+
+// SKAPA PRODUKT
+POST http://{{host}}/api/products/
+Content-Type: application/json
+
+
+{
+  "name": "Produkt 1",
+  "description": "Beskrivning av produkt 1",
+  "price": 100, 
+  "stock": 10
+}
+
+###
+
+//
+// API ENDPOINTS ORDERS
+//
+
+// SKAPA ORDER FÖR EN SPECIFIK USER // PRODUCTS ÄR EN ARRAY MOTSVARANDE INNEHÅLLET I KUNDVAGN, DVS DET SKALL GÅ LÄGGA EN ORDER PÅ 1 ELLER FLERA PRODUKTER
+POST http://{{host}}/api/orders/
+Content-Type: application/json
+
+{
+  "user": "//user email",
+      "products": [
+    {
+      "id": "// ID PÅ EN PRODUKT",
+      "quantity": 1
+    },
+    {
+      "id": "// ID PÅ EN PRODUKT",
+      "quantity": 2
+    }
+  ]
+}
+
+###
+
+
+// HÄMTA ALLA ORDERS
+GET http://{{host}}/api/orders/
+
+###

@@ -1,0 +1,35 @@
+Användarhantering i projektet
+
+I mitt projekt hanteras användare genom ett antal välorganiserade mekanismer för att säkerställa funktionalitet och säkerhet:
+
+Modell och datalagring:
+
+Användarmodell: Användare representeras av en användarmodell som har följande egenskaper:
+Identifierare: Ett unikt identifikationsnummer.
+Namn: Användarnamn.
+E-post: Användarens e-postadress (används för identifiering vid inloggning).
+PasswordHash: Lösenordet krypteras med SHA256 innan det sparas, vilket säkerställer att lösenord inte lagras i vanlig text.
+IsAdmin: En logisk flagga som indikerar om användaren är administratör eller inte.
+Datalagring: All användardata lagras i en InMemory-databas via Entity Framework Core, vilket gör både utveckling och testning enkelt.
+registrering:
+
+När en ny användare registrerar sig kontrollerar den först om en användare med samma e-postadress redan finns.
+Annars skapas en ny användare med den information som tillhandahålls och lösenordet kommer att krypteras innan det lagras.
+Detta säkerställer att all användarinformation hanteras säkert.
+Inloggning:
+
+Vid inloggning hämtas användaren baserat på den angivna e-postadressen och lösenordet verifieras genom att jämföra hashen för det skickade lösenordet med det lagrade lösenordet.
+Efter lyckad inloggning returneras koden:
+Om användaren är administratör kommer koden "1234test1234" att returneras.
+För vanliga användare returneras en annan kod (t.ex. "användarkod").
+Dessutom sparas användarens e-post och roll (admin eller vanlig) i sessionen via HttpContext.Session. Detta gör det enkelt att kontrollera åtkomst och anpassa front-end-användargränssnittet.
+Säkerhet och roller:
+
+API-skydd: Slutpunkter som kräver administratörsbehörighet skyddas med en API-nyckel (via ApiKeyAttribute). Denna nyckel läses från konfigurationen (miljövariabler) och lagras aldrig i databasen, vilket är en säkerhetsåtgärd.
+Rollbaserad åtkomst: En användares roll avgör vilka delar av applikationen de får åtkomst till. Till exempel, om inloggningen returnerar administratörskoden, omdirigeras användaren till adminpanelen (admin.html) där administratören kan lägga till nya produkter och kategorier.
+I korthet betyder det att jag hanterar våra användare genom att:
+
+Kryptera och lagra användarlösenord på ett säkert sätt.
+Verifiera inloggningsdata med hjälp av krypterade värden.
+Spara relevant sessionsdata (som e-post och roll) efter att du har loggat in för att kontrollera åtkomsten till olika delar av applikationen.
+Skydda känsliga slutpunkter med en API-nyckel, och se till att endast behöriga personer (administratörer) kan utföra åtgärder som att skapa produkter eller kategorier.
